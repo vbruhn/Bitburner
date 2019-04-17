@@ -1,24 +1,23 @@
 hackScripts = ["_hack.script", "_weaken.script"];
-hack_mem = getScriptRam(hackScripts[0], "home");
+hack_mem = getScriptRam(hackScripts[0], getHostname());
 
 bestTarget = read("best_target.txt").split(",");
 tName = bestTarget[0];
 tMaxMoney = bestTarget[4];
 tMinSec = bestTarget[5];
 
-money_target = 0.75 *  tMaxMoney;
-sec_level = (tMinSec - 0) + 5;     //-0 to convert string to number
+money_target = 0.75 * tMaxMoney;
+sec_level = (tMinSec - 0) + 5; //-0 to convert string to number
 
-availRAM = Math.floor(getServerRam("home")[0] / 1.2);
+availRAM = Math.floor(getServerRam(getHostname())[0] / 1.2);
 numThreads = 20;
 ScriptTotalRAM = hack_mem * numThreads;
 MaxScripts = Math.floor(availRAM / ScriptTotalRAM) - 1;
-step = 1;
+step = 0.5;
 
-for (i = 0; i < MaxScripts; i++)
-{
-    exec(hackScripts[0], "home", numThreads, tName, money_target, sec_level);
+for (i = 0; i < MaxScripts; i++) {
+    exec(hackScripts[0], getHostname(), numThreads, tName, money_target, sec_level);
     money_target = money_target - step;
-    sleep (1000);
+    sleep(500);
 }
-tprint ("Home started " + MaxScripts + " Scripts");
+tprint(getHostname() + " started " + MaxScripts + " Scripts");
