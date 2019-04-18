@@ -20,7 +20,7 @@ for (i = 0; i < rows.length; ++i) {
     if (serverData.length < 7) break; //Ignore last blank row
 
     svName = serverData[0];
-    //svRamAvail = serverData[1];
+    svRamAvail = serverData[1];
     svPortsNeeded = serverData[2];
     svHackLevel = serverData[3];
 
@@ -37,7 +37,7 @@ for (i = 0; i < rows.length; ++i) {
         if (numBusters > 4) sqlinject(svName);
 
         nuke(svName);
-        tprint("Server nuked: " + svName);
+        tprint("Server hacked: " + svName);
     }
     if (hasRootAccess(svName)) {
         svMaxMoney = serverData[4];
@@ -49,8 +49,9 @@ for (i = 0; i < rows.length; ++i) {
             bestTargetScore = svScore;
             bestTargetIndex = i;
         }
-
-        write("hacked.txt", svName);
+        if (svRamAvail > 0 && svMaxMoney > 0) {
+            write("hacked.txt", svName + ",");
+        }
     }
     //tprint("Done Testing " + svName);
 }
