@@ -1,11 +1,11 @@
-hackScripts = ["_hack.script", "_weaken.script", "3_homeScripts.script", "best_target.txt"];
+hackScripts = ["_hack.script", "_weaken.script", "_serverScripts.script", "best_target.txt"];
 
 serverCostMulti = 55000;
 maxMoney = getServerMoneyAvailable('home') / 25;
 
 // get servers with the minimum, predefined amount, but check if there is already
 // a higher configured pserv
-ramToBuy = 64;
+ramToBuy = 16;
 //if (serverExists('pserv-0')) {
 //    ramToBuy = Math.max(ramToBuy, getServerRam('pserv-0')[0]);
 //}
@@ -19,7 +19,10 @@ if (maxMoney > serverCostMulti * ramToBuy) {
     }
     ramToBuy /= 2;
 }
-print('1: Calculated: ' + ramToBuy + ' GB RAM for ' + serverCostMulti * ramToBuy + '$');
+
+//ramToBuy = 64;
+
+print('Calculated: ' + ramToBuy + ' GB RAM for ' + serverCostMulti * ramToBuy + '$');
 
 i = 0;
 while (i < getPurchasedServerLimit()) {
@@ -39,17 +42,19 @@ while (i < getPurchasedServerLimit()) {
                         for (j = 0; j < hackScripts.length; ++j) {
                             scp(hackScripts[j], hostname);
                         }
-                        exec('3_homeScripts.script', hostname);
+                        exec('_serverScripts.script', hostname);
                         ++i;
                     }
                 }
             }
+            sleep (500);
         } else {
             ++i;
+            sleep (500);
         }
     }
 
-    print('2: Buying player servers. Target: ' + ramToBuy + ' GB RAM for ' + serverCostMulti * ramToBuy + '$');
+    print('Bought player server #' + i + ' with ' + ramToBuy + ' GB RAM for $' + serverCostMulti * ramToBuy);
     //i = 0;
-    sleep(6 * 1000, false);
+    sleep(6000);
 }
