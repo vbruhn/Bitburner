@@ -1,4 +1,4 @@
-hackScripts = ["_hack.script", "_weaken.script", "_serverScripts.script", "best_target.txt"];
+hackScripts = ["_singleHack.script", "_singleGrow.script", "_singleWeaken.script", "_serverScripts.script", "best_target.txt"];
 
 serverCostMulti = 55000;
 maxMoney = getServerMoneyAvailable('home') / 25;
