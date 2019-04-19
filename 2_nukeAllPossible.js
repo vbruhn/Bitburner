@@ -37,22 +37,28 @@ for (i = 0; i < rows.length; ++i) {
         if (numBusters > 4) sqlinject(svName);
 
         nuke(svName);
-        tprint("Server hacked: " + svName);
+        tprint("Server nuked: " + svName);
     }
     if (hasRootAccess(svName)) {
         svMaxMoney = serverData[4];
         svMinSec = serverData[5];
         svGrowRt = serverData[6];
         svExecTime = getHackTime(svName);
-        svScore = (100 - svMinSec) * svMaxMoney * svGrowRt / svExecTime;
+        svScore = (100 - (svMinSec * 1.5)) * svMaxMoney * svGrowRt / svExecTime;
         if (svScore > bestTargetScore) {
             bestTargetScore = svScore;
             bestTargetIndex = i;
         }
         if (svRamAvail > 0 && svMaxMoney > 0) {
             write("hacked.txt", svName + ",");
+            if (!scriptRunning("_hack_me.script", svName)) {
+                scp("_hack_me.script", svName);
+                numThreads = Math.floor(svRamAvail/getScriptRam("_hack_me.script",svName)-1);
+                exec("_hack_me.script",svName,numThreads);
+            }
         }
     }
+    //tprint("Done Testing " + svName);
 }
 write("best_target.txt", rows[bestTargetIndex], "w");
 tprint("Best target:" + rows[bestTargetIndex]);
