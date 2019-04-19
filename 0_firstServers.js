@@ -1,6 +1,5 @@
 servers = ["foodnstuff", "sigma-cosmetics", "joesguns", "nectar-net", "hong-fang-tea", "harakiri-sushi"];
-hackscript = "_hack.script";
-weakenscript = "_weaken.script";
+hackscript = "_hack_me.script";
 
 i = 0;
 while (i < servers.length) {
@@ -11,8 +10,7 @@ while (i < servers.length) {
 
     //Copy our generic hacking script and weaken script over to the target server
     scp(hackscript, servers[i]);
-    scp(weakenscript, servers[i]);
-
+    
     //NUKE the target server to gain root access
     nuke(servers[i]);
     
