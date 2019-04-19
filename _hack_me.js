@@ -1,3 +1,5 @@
+// This script gets copied to hacked servers, it hacks this server itself ... for fun
+
 // Defines the "target server", which is the server
 // that we're going to hack. In this case, it's "foodnstuff"
 var target = getHostname();
