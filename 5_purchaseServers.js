@@ -43,6 +43,8 @@ while (i < getPurchasedServerLimit()) {
                             scp(hackScripts[j], hostname);
                         }
                         exec('_serverScripts.script', hostname);
+                        
+                        print('Bought player server #' + i + ' with ' + ramToBuy + ' GB RAM for $' + serverCostMulti * ramToBuy);
                         ++i;
                     }
                 }
@@ -53,8 +55,5 @@ while (i < getPurchasedServerLimit()) {
             sleep (500);
         }
     }
-
-    print('Bought player server #' + i + ' with ' + ramToBuy + ' GB RAM for $' + serverCostMulti * ramToBuy);
-    //i = 0;
     sleep(6000);
 }
