@@ -53,7 +53,6 @@ for (i = 0; i < rows.length; ++i) {
             write("hacked.txt", svName + ",");
         }
     }
-    //tprint("Done Testing " + svName);
 }
 write("best_target.txt", rows[bestTargetIndex], "w");
 tprint("Best target:" + rows[bestTargetIndex]);
