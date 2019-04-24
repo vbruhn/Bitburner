@@ -15,7 +15,7 @@ Scripts:
     
     The best hackable server is stored for further reference
     
-3:  not in use anymore ... run script #9 instead
+3:  deleted ... run script #9 instead
 
 4:  tail the output of this script to observe the stats of the best target server
 
@@ -26,5 +26,7 @@ Scripts:
     - or upgrade existing pservers to highest RAM with available bucks
     
 6:  Update existing pservers with hacking scripts and best TargetServer
+
+7:  Scans all nuked servers and installs the target-server to be constantly weakened
 
 9:  starts a hacking script on home on best TargetServer
