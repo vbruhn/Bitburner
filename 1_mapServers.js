@@ -1,3 +1,6 @@
+// This script makes a catalogue of all servers in the network
+// should be run before buying P-Servers!!!
+
 servers = ["home"];
 clear("servers.txt");
 
