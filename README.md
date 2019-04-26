@@ -10,13 +10,11 @@ Scripts:
 1:  Maps all servers in a file for Script #2
 
 2:  Scans the ServerMap for hackable servers and nukes these.
-
-    The _hack_me.script gets installed
     
     The best hackable server is stored for further reference
     
-3:  deleted ... run script #9 instead
-
+    run script #7 afterwards
+    
 4:  tail the output of this script to observe the stats of the best target server
 
 5:  buy personal servers
@@ -24,6 +22,8 @@ Scripts:
     - by best for available bucks
     
     - or upgrade existing pservers to highest RAM with available bucks
+    
+    - installs hacking-scripts
     
 6:  Update existing pservers with hacking scripts and best TargetServer
 
