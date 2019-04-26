@@ -1,0 +1,48 @@
+// Startup script
+var myStats = getStats();
+
+// Get Hackinglevel up to 40
+universityCourse("Rothman University", "Algorithms");
+
+while (myStats.hacking < 40) {
+    sleep(2000);
+    myStats = getStats();
+}
+
+// Get Combat stats up to 30
+gymWorkout("Powerhouse Gym", "str");
+
+while (myStats.strength < 30) {
+    sleep(2000);
+    myStats = getStats();
+}
+
+gymWorkout("Powerhouse Gym", "def");
+
+while (myStats.defense < 30) {
+    sleep(2000);
+    myStats = getStats();
+}
+
+gymWorkout("Powerhouse Gym", "dex");
+
+while (myStats.dexterity < 30) {
+    sleep(2000);
+    myStats = getStats();
+}
+
+gymWorkout("Powerhouse Gym", "agi");
+
+while (myStats.agility < 30) {
+    sleep(2000);
+    myStats = getStats();
+}
+stopAction();
+
+while (getServerMoneyAvailable("home") < 2000000){
+    var time = commitCrime("rob store");
+    sleep(time);
+    while(isBusy()){
+        sleep(1000);
+    }
+}
