@@ -1,4 +1,4 @@
-hackScripts = ["_singleHack.script", "_singleGrow.script", "_singleWeaken.script", "_serverScripts.script", "best_target.txt", "_permaWeaken.script"];
+hackScripts = ["_singleHack.script", "_singleGrow.script", "_singleWeaken.script", "_serverScripts.script", "best_target.txt"];
 
 serverCostMulti = 55000;
 maxMoney = getServerMoneyAvailable('home') / 25;
@@ -7,6 +7,9 @@ maxRam = getPurchasedServerMaxRam('home');
 // get servers with the minimum, predefined amount, but check if there is already
 // a higher configured pserv
 ramToBuy = 16;
+//if (serverExists('pserv-0')) {
+//    ramToBuy = Math.max(ramToBuy, getServerRam('pserv-0')[0]);
+//}
 
 // calculate max RAM for the buck
 if (maxMoney > serverCostMulti * ramToBuy) {
@@ -40,19 +43,25 @@ while (i < getPurchasedServerLimit()) {
 
             if (!serverExists('pserv-' + i)) {
                 print("Line 49");
-                hostname = purchaseServer('pserv-' + i, ramToBuy);
-                if (hostname) {
-                    for (j = 0; j < hackScripts.length; ++j) {
-                        scp(hackScripts[j], hostname);
-                    }
+                pServer = purchaseServer('pserv-' + i, ramToBuy);
+                if (pServer) {
+                    
                     // run only the permaWeakenScript on pserv-0
+                    // remove the part from ... (i === 0) ... to ... } else
+                    // if you want all servers to rotate through the 
+                    // weaken / grow / hack scripts
                     if (i === 0) {
-                        pmemory = getServerRam(hostname);
+                        scp("_permaWeaken.script", pServer);
+                        scp("best_target.txt", pServer);
+                        pmemory = getServerRam(pServer);
                         pavailableMem = pmemory[0] - pmemory[1];
-                        pnumThreads = Math.round(pavailableMem / getScriptRam("_permaWeaken.script", hostname) - 1);
-                        exec("_permaWeaken.script", hostname, pnumThreads);
+                        pnumThreads = Math.round(pavailableMem / getScriptRam("_permaWeaken.script", pServer) - 1);
+                        exec("_permaWeaken.script", pServer, pnumThreads);
                     } else {
-                        exec('_serverScripts.script', hostname);
+                        for (j = 0; j < hackScripts.length; ++j) {
+                        scp(hackScripts[j], pServer);
+                    }
+                        exec('_serverScripts.script', pServer);
                     }
                     print('Bought player server #' + i + ' with ' + ramToBuy + ' GB RAM for $' + serverCostMulti * ramToBuy);
                     ++i;
