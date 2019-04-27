@@ -21,7 +21,7 @@ Use the extension .script instead of .js there
     
 4:  tail the output of this script to observe the stats of the best target server
 
-5:  buy personal servers
+5:  buy personal servers (RAM: 9.25 GB!)
 
     - by best for available bucks
     
