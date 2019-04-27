@@ -6,33 +6,44 @@ export async function main(ns) {
     const clientName = clientData[0];
     const clientMaxMoney = ns.getServerMaxMoney(clientName);
     const clientMinSecurity = ns.getServerMinSecurityLevel(clientName) + 5;
+    const thisServer = ns.getHostname();
+    const moneyStart = ns.getServerMoneyAvailable(thisServer);
 
-    var a = 0;
-    var b = 0;
-    var currentMoney = "";
-    var maxMoney = "";
+    var a = 0,
+        b = 0,
+        c = 0;
+    var currentMoney = "",
+        maxMoney = "",
+        moneyGain = "";
     var timeStart = Math.round(ns.getTimeSinceLastAug() / 1000);
-    var timeNow = 0;
+    var timeNow = 0,
+        moneyNow = 0;
 
     while (true) {
         timeNow = Math.round(ns.getTimeSinceLastAug() / 1000) - timeStart;
-        ns.print("Observing: " + clientName + " for " + timeNow + " seconds.");
-        
+        ns.print("Observing: " + clientName);
+
         a = Math.round(ns.getServerSecurityLevel(clientName));
         b = Math.round(ns.getServerMoneyAvailable(clientName));
+        c = Math.round(ns.getServerMoneyAvailable(thisServer) - moneyStart);
 
         currentMoney = b.toLocaleString(
             undefined, // leave undefined to use the browser's locale,
             // or use a string like 'en-US' to override it.
-            { minimumFractionDigits: 2 });
+            { minimumFractionDigits: 0 });
         maxMoney = clientMaxMoney.toLocaleString(
             undefined, // leave undefined to use the browser's locale,
             // or use a string like 'en-US' to override it.
-            { minimumFractionDigits: 2 });
+            { minimumFractionDigits: 0 });
+        moneyGain = c.toLocaleString(
+            undefined, // leave undefined to use the browser's locale,
+            // or use a string like 'en-US' to override it.
+            { minimumFractionDigits: 0 });
 
         ns.print(" ");
         ns.print("Security-Level: " + a + " of wanted " + clientMinSecurity);
         ns.print("Available Money: $" + currentMoney + " / $" + maxMoney);
+        ns.print("Hacked $" + moneyGain + " in " + timeNow + " seconds.");
 
         await ns.sleep(5000);
         ns.clearLog();
