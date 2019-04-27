@@ -1,9 +1,13 @@
 # Bitburner
-My scripts ... some are WIP ... for the game Bitburner: https://danielyxie.github.io/bitburner/
+My scripts ... they are WIP but work ... for the game Bitburner: https://danielyxie.github.io/bitburner/
 
-For Github, the file-extensions were changed to .js - this gives better readability. For use in the game change the file-extension back to .script.
+For Github, the file-extensions were changed to .js - this gives better readability. For use in the game change the file-extension back to .ns
 
-Scripts:
+### 27th of April 2019 ... NetScript 1 scripts were moved into subfolder ns1
+Use the extension .script instead of .js there
+
+
+###Scripts:
 
 0:  Nukes the 0-Port Servers and starts a hack-script on these
 
