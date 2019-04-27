@@ -33,4 +33,4 @@ Use the extension .script instead of .js there
 
 7:  Scans all nuked servers and installs the target-server to be constantly weakened
 
-9:  starts a hacking script on home on best TargetServer
+9:  starts a hacking script on home on best TargetServer (uses 6.4 GB RAM!)
