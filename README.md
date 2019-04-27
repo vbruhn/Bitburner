@@ -1,5 +1,6 @@
 # Bitburner
-My scripts ... they are WIP but work ... for the game Bitburner: https://danielyxie.github.io/bitburner/
+Not really my scripts ... inspired by many psotings of other users. They are WIP but work ... for the game Bitburner:
+### https://danielyxie.github.io/bitburner/
 
 For Github, the file-extensions were changed to .js - this gives better readability. For use in the game change the file-extension back to .ns
 
