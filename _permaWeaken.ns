@@ -1,0 +1,8 @@
+export async function main(ns) {
+    const clientData = ns.read("best_target.txt").split(",");
+    const clientName = clientData[0];
+
+    while (true) {
+        await ns.weaken(clientName);
+    }
+}
