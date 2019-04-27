@@ -17,7 +17,7 @@ Use the extension .script instead of .js there
     
     The best hackable server is stored for further reference
     
-    run script #7 afterwards
+    You get asked, to run script #7 afterwards by the script
     
 4:  tail the output of this script to observe the stats of the best target server
 
