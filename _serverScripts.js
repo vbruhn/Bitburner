@@ -113,10 +113,16 @@ export async function main(ns) {
                 // wait for the script to start
                 while (!ns.scriptRunning(hackScript, serverName)) {
                     await ns.sleep(1000);
-
                 }
-
+                
+                // wait for the script to finish and check if server's money is still enough
                 while (ns.scriptRunning(hackScript, serverName)) {
+                    currentDollars = Math.round(ns.getServerMoneyAvailable(clientName));
+                    if (currentDollars < money_target) {
+                        ns.kill(hackScript, clientName);
+                        // could insert a break; command, but better to wait for
+                        // the script to finish and to have more RAM for Growth
+                    }
                     await ns.sleep(1000);
                 }
             } else {
