@@ -1,6 +1,8 @@
 export async function main(ns) {
     // Disable all stupid logging:
     ns.disableLog('ALL');
+    var port = ns.getPortHandle(1);
+    var output = "";
 
     // Scripts that perform just one simple/single task ... 
     const weakenScript = "_singleWeaken.ns";
@@ -52,11 +54,14 @@ export async function main(ns) {
 
 
         if (currentSecLevel > sec_target) {
-            numThreads = (availRAM / 1.2 / weakenMem);
+            numThreads = Math.round(availRAM / 1.2 / weakenMem);
 
             if (numThreads > 0) {
                 waitTime = Math.round(ns.getWeakenTime(clientName));
-                ns.print("Weaken() will last for approx. " + waitTime + " seconds.");
+                output = "Weaken(with " + numThreads + " Threads) will last for approx. " + waitTime + " seconds.";
+                ns.print(output);
+                port.clear();
+                port.write(output);
 
                 if (!ns.scriptRunning(weakenScript, serverName)) {
                     await ns.run(weakenScript, numThreads, clientName);
@@ -71,17 +76,20 @@ export async function main(ns) {
                     // check if another script has already lowered the secLevel
                     currentSecLevel = Math.round(ns.getServerSecurityLevel(clientName));
                     if (currentSecLevel <= sec_target) {
-                        ns.print("secLevel reached goal by external script!");
+                        ns.print("secLevel reached wanted level!");
                         break;
                     }
                 }
             }
         } else if (currentDollars < money_target) {
-            numThreads = (availRAM / 1.2 / growMem);
+            numThreads = Math.round(availRAM / 1.2 / growMem);
 
             if (numThreads > 0) {
                 waitTime = Math.round(ns.getGrowTime(clientName));
-                ns.print("Grow() will last for approx. " + waitTime + " seconds.");
+                output = "Grow(with " + numThreads + " Threads) will last for approx. " + waitTime + " seconds.";
+                ns.print(output);
+                port.clear();
+                port.write(output);
 
                 if (!ns.scriptRunning(growScript, serverName)) {
                     await ns.run(growScript, numThreads, clientName);
@@ -95,7 +103,7 @@ export async function main(ns) {
                     // check if another script has reached the growAmount
                     currentDollars = Math.round(ns.getServerMoneyAvailable(clientName));
                     if (currentDollars > money_target) {
-                        ns.print("Money reached goal by external script!");
+                        ns.print("Money reached goal!");
                         break;
                     }
                 }
@@ -116,8 +124,11 @@ export async function main(ns) {
 
             if (numThreads > 0) {
                 waitTime = Math.round(ns.getHackTime(clientName));
+                output = "Hack(with " + numThreads + " Threads) will last for approx. " + waitTime + " seconds.";
+                ns.print(output);
                 ns.print("Want $" + wantedMoney + " ...");
-                ns.print("Hack(" + numThreads + " Threads) will last for approx. " + waitTime + " seconds.");
+                port.clear();
+                port.write(output);
 
                 await ns.run(hackScript, numThreads, clientName);
 
