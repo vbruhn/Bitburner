@@ -27,7 +27,7 @@ export async function main(ns) {
     }
 
     ns.print('Calculated: ' + ramToBuy + ' GB RAM for ' + serverCostMulti * ramToBuy + '$');
-    
+
     const maxNumServers = ns.getPurchasedServerLimit();
     const serverCost = ns.getPurchasedServerCost(ramToBuy);
 
@@ -72,5 +72,6 @@ export async function main(ns) {
                 await ns.sleep(500);
             }
         }
+        await ns.sleep(500);
     }
 }
