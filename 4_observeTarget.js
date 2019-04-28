@@ -43,9 +43,9 @@ export async function main(ns) {
         ns.print(" ");
         ns.print("Security-Level: " + a + " of wanted " + clientMinSecurity);
         ns.print("Available Money: $" + currentMoney + " / $" + maxMoney);
-        ns.print("Hacked $" + moneyGain + " in " + timeNow + " seconds.");
+        ns.print("Money-Delta: $" + moneyGain + " in " + timeNow + " seconds.");
 
-        await ns.sleep(5000);
+        await ns.sleep(1000);
         ns.clearLog();
     }
 }
