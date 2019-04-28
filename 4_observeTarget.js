@@ -18,6 +18,8 @@ export async function main(ns) {
     var timeStart = Math.round(ns.getTimeSinceLastAug() / 1000);
     var timeNow = 0,
         moneyNow = 0;
+    var port = ns.getPortHandle(1);
+    var output = "";
 
     while (true) {
         timeNow = Math.round(ns.getTimeSinceLastAug() / 1000) - timeStart;
@@ -39,8 +41,14 @@ export async function main(ns) {
             undefined, // leave undefined to use the browser's locale,
             // or use a string like 'en-US' to override it.
             { minimumFractionDigits: 0 });
+            
+        if (!port.empty()) {
+            output = port.read();
+            port.clear();
+        }
 
         ns.print(" ");
+        ns.print("Home-Server's Task: " + output);
         ns.print("Security-Level: " + a + " of wanted " + clientMinSecurity);
         ns.print("Available Money: $" + currentMoney + " / $" + maxMoney);
         ns.print("Money-Delta: $" + moneyGain + " in " + timeNow + " seconds.");
