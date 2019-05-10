@@ -1,0 +1,133 @@
+const symbols = ["APHE", "JGN", "ECP", "BLD", "OMTK", "FSIG", "FLCM", "CTYS"
+];
+
+const minKeep = 0.95; // Sell stocks if the sma was estimating the wrong direction
+var stocks = [];
+var counter = 0;
+
+function getBuyValue(ns) {
+    var positions = 0;
+    //how many of the 6 stocks do we currently have a position open?
+    for (let i = 0; i < stocks.length; i++) {
+        if ((stocks[i].sharesLong + stocks[i].sharesShort) !== 0) {
+            positions += 1;
+        }
+    }
+    //allow opening of a position using of a proportion of available cash 
+    //depending on number of already open positions
+    var buyValue = Math.floor(ns.getServerMoneyAvailable("home") / (symbols.length + 1 - positions));
+    return buyValue;
+}
+
+function initStocks() {
+    for (let i = 0; i < symbols.length; i++) {
+        let stock = {
+            sym: symbols[i],
+            new_rising: false,
+            old_rising: false,
+            rising: true,
+            price: 0,
+            lastPrice: 0,
+            sma10: [],
+            sma40: [],
+            sma10sum: 0,
+            sma40sum: 0,
+            sharesLong: 0,
+            sharesShort: 0,
+            avgLong: 0,
+            avgShort: 0
+        };
+
+        stocks[i] = stock;
+    }
+}
+
+export async function main(ns) {
+    ns.disableLog('sleep');
+    ns.disableLog('getServerMoneyAvailable');
+    ns.clearLog();
+
+    ns.print("Waiting for stocks to change ...");
+
+    //init
+    initStocks();
+
+    while (true) {
+        await ns.sleep(500);
+
+        doCalc(ns);
+    }
+}
+
+function doCalc(ns) {
+    for (let i = 0; i < stocks.length; i++) {
+        let stock = stocks[i];
+        let price = ns.getStockPrice(stock.sym);
+        
+        // prevent a total loss due to a missinterpretaition
+        if ((stock.sharesLong > 0) & (price < stock.avgLong * minKeep)) {
+            ns.tprint(`${stock.sym}: Panic Long: ${stock.sharesLong} | price: ${price} | avg: ${stock.avgLong}`);
+            ns.sellStock(stock.sym, stock.sharesLong);
+        }
+        if ((stock.sharesShort > 0) & (price > stock.avgShort / minKeep)) {
+            ns.tprint(`${stock.sym}: Panic Short: ${stock.sharesShort} | price: ${price} | avg: ${stock.avgShort}`);
+            ns.sellShort(stock.sym, stock.sharesShort);
+        }
+
+        if (price != stock.lastPrice) {
+            //update lastprice
+            stock.lastPrice = price;
+            //count the lead in
+            if (i === 0)
+                counter = counter + 1;
+            //note old value                     
+            stock.old_rising = stock.rising;
+            //update sma10
+            stock.sma10.push(price);
+            stock.sma10sum += price;
+            if (stock.sma10.length > 10) {
+                stock.sma10sum -= stock.sma10.shift();
+            }
+            //update sma40
+            stock.sma40.push(price);
+            stock.sma40sum += price;
+            if (stock.sma40.length > 40) {
+                stock.sma40sum -= stock.sma40.shift();
+            }
+            //update rising once we get warmed up
+            if (counter > 43) {
+                var avg10 = stock.sma10sum / 10;
+                var avg40 = stock.sma40sum / 40;
+                if (avg10 > avg40) {
+                    stock.new_rising = true;
+                }
+                else {
+                    stock.new_rising = false;
+                }
+                stock.rising = stock.new_rising;
+            }
+            //trade if apt
+            if (counter > 45) {
+                if (stock.new_rising && !stock.old_rising) {
+                    //was falling, now rising, close short and open long
+                    ns.sellShort(stock.sym, stock.sharesShort);
+                    ns.print(`Selling all Shorts of ${stock.sym}`);
+                    let volume = getBuyValue(ns) / price;
+                    ns.buyStock(stock.sym, volume);
+                }
+                if (!stock.new_rising && stock.old_rising) {
+                    //was rising, now falling, close long and open short
+                    ns.sellStock(stock.sym, stock.sharesLong);
+                    ns.print(`Selling all Longs of ${stock.sym}`);
+                    let volume = getBuyValue(ns) / price;
+                    ns.shortStock(stock.sym, volume);
+                }
+            }
+            let pos = ns.getStockPosition(stock.sym);
+            stock.sharesLong = pos[0];
+            stock.sharesShort = pos[2];
+            stock.avgLong = Math.round(pos[1] * 100) / 100;
+            stock.avgShort = Math.round(pos[3] * 100) / 100;
+        }
+    }
+}
