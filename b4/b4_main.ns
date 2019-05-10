@@ -1,0 +1,19 @@
+export async function main(ns) {
+    // script to start /b4/_main.ns
+    // opening a prompt to kill the script
+    
+    await ns.run("/b4/_main.ns", 1);
+    
+    await ns.sleep(10000);
+    
+    var stopScript = false;
+    while (true) {
+        stopScript = await ns.prompt("YES: Stop this script! ... \r\nNO: Hide this prompt for 30 seconds! ...");
+        if (stopScript) {
+            ns.kill("/b4/_main.ns", ns.getHostname());
+            ns.stopAction();
+            break;
+        }
+        await ns.sleep(30 * 1000);
+    }
+}
