@@ -1,10 +1,13 @@
 export async function main(ns) {
+    ns.disableLog('ALL');
+    
     const hackScripts = ["_singleHack.ns", "_singleGrow.ns", "_singleWeaken.ns",
         "_serverScripts.ns", "best_target.txt"
     ];
 
-    const serverCostMulti = 55000;
-    const maxMoney = ns.getServerMoneyAvailable('home') / 25;
+    const serverCostMulti = ns.getPurchasedServerCost(16) / 16;
+    const maxNumServers = ns.getPurchasedServerLimit();
+    const maxMoney = ns.getServerMoneyAvailable('home') / maxNumServers;
     const maxRam = ns.getPurchasedServerMaxRam('home');
 
     // get servers with the minimum, predefined amount, but check if there is already
@@ -27,8 +30,7 @@ export async function main(ns) {
     }
 
     ns.print('Calculated: ' + ramToBuy + ' GB RAM for ' + serverCostMulti * ramToBuy + '$');
-
-    const maxNumServers = ns.getPurchasedServerLimit();
+    
     const serverCost = ns.getPurchasedServerCost(ramToBuy);
 
     var i = 0;
